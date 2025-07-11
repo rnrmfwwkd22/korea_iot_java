@@ -82,7 +82,7 @@ public class E_DataType {
         boolean isLogin = true;
         boolean isLightOn = false;
 
-        // 2) 참조 자료형
+        // 2. 참조 자료형
         // : 기본 자료형을 기초로 만들어진 자료형
         // : 실제 데이터 값 X, 데이터가 저장된 주소값을 가지는 자료형
 
