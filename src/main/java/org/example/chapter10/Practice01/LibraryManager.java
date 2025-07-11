@@ -2,6 +2,7 @@ package org.example.chapter10.Practice01;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 //도서 관리 기능을 수행 (관리할 행동을 실질적 구현)
 public class LibraryManager implements Manageable{
@@ -18,11 +19,11 @@ public class LibraryManager implements Manageable{
     public void listAll() {
         //전체 조회: isEmpty()로 요소값 존재 여부 확인에 따라 로직을 처리
         if (items.isEmpty()) {
-            System.out.println("no items in the library");
+            System.out.println("No items in the library");
         } else {
             System.out.println("== Library Items ==");
-            for (Item itemL : items) {
-                itemL.display();
+            for (Item item : items) {
+                item.display();
             }
         }
 
@@ -31,11 +32,12 @@ public class LibraryManager implements Manageable{
     @Override
     public void updateStock(String id, int quantity) {
         for (Item item : items) {
-//            Item.updateStock();
+//            Item.updateStock(); // 안됨
             if (item.getId().equals(id) && item instanceof Book) {
-//                Book selectedBook = (Book) item;
 
-                ((Book)item).updateStock(quantity);
+                ((Book)item).updateStock(quantity); //다운 캐스팅
+
+//                Book selectedBook = (Book) item; //다운 캐스팅
 //                selectedBook.updateStock(quantity);
 
                 System.out.println("Stock updated for ID: " + id + ", Stock: " + ((Book)item).getStock());
@@ -74,17 +76,66 @@ public class LibraryManager implements Manageable{
 
     @Override
     public List<Item> search(String keyword) {
-        return List.of();
+        // 전체 리스트의 요소에서 키워드 검색
+        // : name(책 이름), author( 작가명), publisher(출판사) 통합 검색
+
+        List<Item> foundItems = new ArrayList<>(); // 검색된 도서 정보들이 저장될 리스트 (필터링)
+
+        for (Item item : items) {
+            if (item.getName().contains(keyword)
+                || (item instanceof  Book && ((Book)item).getAuthor().contains(keyword)
+                    || ((Book)item).getPublisher().contains(keyword))
+
+            ) {
+                foundItems.add(item);
+            }
+        }
+        if (foundItems.isEmpty()) {
+            throw new NoSuchElementException("NO item found for keyword: " + keyword);
+        }
+
+        return foundItems;
     }
 
     @Override
     public List<Item> searchByCategory(String category) {
-        return List.of();
+        List<Item> resilt = new ArrayList<>();
+
+        for (Item item : items) {
+            if (item instanceof Book && ((Book) item).getCategory().equalsIgnoreCase(category)) {
+                // equalsIgnoreCase
+                // : 대소문자를 구분하지 않고 데이터의 값을 비교
+                // - 영어만 사용 가능
+                resilt.add(item);
+            }
+        }
+
+        if (resilt.isEmpty()) {
+            throw new NoSuchElementException("NO item found for this category: " + category);
+        }
+
+        return resilt;
     }
 
     @Override
     public List<Item> searchByPriceRange(int minPrice, int maxPrice) {
-        return List.of();
+        List<Item> result = new ArrayList<>();
+
+        for (Item item : items) {
+            if (item instanceof Book) {
+                int price = ((Book) item).getPrice();
+
+                if (price >= minPrice && price <= maxPrice) {
+                    result.add(item);
+                }
+            }
+        }
+
+        if (result.isEmpty()) {
+            throw new NoSuchElementException("NO item found for range: " + minPrice + " ~ " + maxPrice);
+        }
+
+        return result;
     }
 }
 

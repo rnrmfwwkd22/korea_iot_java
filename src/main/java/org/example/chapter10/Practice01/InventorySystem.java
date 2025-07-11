@@ -1,5 +1,6 @@
 package org.example.chapter10.Practice01;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -15,6 +16,11 @@ public class InventorySystem {
             System.out.println("2. Read 전체 책 조회");
             System.out.println("3. Update 책 수정(재고)");
             System.out.println("4. Delete 책 삭재");
+            System.out.println("5. 책 통합 검색");
+            System.out.println("6. 책 카테고리 검색");
+            System.out.println("7. 책 가격 검색");
+            System.out.println("0. 프로그램 종료");
+
             try {
                 // sc.nextLine(); - 입력값이 문자열로 인식
 
@@ -47,26 +53,93 @@ public class InventorySystem {
                         int price = Integer.parseInt(sc.nextLine());
                         System.out.println("Enter Book Stock: ");
                         int stock = Integer.parseInt(sc.nextLine());
+                        System.out.println();
+
 
                         manager.add(new Book(id, title, isbn, author, publisher, year, price, stock, category));
                         break;
                     case 2:
                         manager.listAll();
+                        System.out.println();
                         break;
                     case 3:
                         System.out.println("Enter Book ID to update stock: ");
                         String updateId = sc.nextLine();
                         System.out.println("Enter Quantity to add/subtract");
                         int quantity = Integer.parseInt(sc.nextLine());
+                        System.out.println();
 
                         manager.updateStock(updateId, quantity);
                         break;
                     case 4:
                         System.out.println("Enter Book ID to remove: ");
                         String removedId = sc.nextLine();
+                        System.out.println();
                         manager.remove(removedId);
                         break;
+                    case 5:
+                        System.out.println("검색어를 입력하세요.");
+                        String keyword = sc.nextLine();
+
+                        List<Item> searchResults = manager.search(keyword);
+
+                        if (searchResults.isEmpty()) {
+                            System.out.println("No items found in keyword: " + keyword);
+                        } else {
+                            for (Item item : searchResults) {
+                                item.display();
+                            }
+                        }
+                        System.out.println();
+                        break;
+                    case 6:System.out.println("검색어를 입력하세요.");
+                        String searchCategory = sc.nextLine();
+
+                        List<Item> categoryResults = manager.search(searchCategory);
+
+                        if (categoryResults.isEmpty()) {
+                            System.out.println("No items found in category: " + searchCategory);
+                        } else {
+                            for (Item item : categoryResults) {
+                                item.display();
+                            }
+                        }
+                        System.out.println();
+                        break;
+                    case 7:
+                        System.out.println("Enter minmum price: ");
+                        int minPrice = Integer.parseInt(sc.nextLine());
+                        System.out.println("Enter maxmum price: ");
+                        int maxPrice = Integer.parseInt(sc.nextLine());
+
+                        List<Item> priceResults = manager.searchByPriceRange(minPrice, maxPrice);
+
+                        if (priceResults.isEmpty()) {
+                            System.out.println("No items in price range");
+                        } else {
+                            for (Item item : priceResults) {
+                                item.display();
+                            }
+                        }
+
+                        System.out.println();
+                        break;
+                    case  0:
+                        System.out.println("종료하시겠습니까? 종료를 원하시면 'y'를 입력해주세요.");
+                        if (sc.nextLine().equalsIgnoreCase("y")) {
+                            System.out.println("종료합니다 : )");
+                            sc.close();
+                            return; // 메서드의 종료! (while 무한 루프 탈출
+                        }
+                        System.out.println("다시 입력하세요.");
+                        System.out.println();
+                        break;
+                    default:
+                        System.out.println("유효하지 않은 선택입니다. 다시 시도해주세요.");
+                        System.out.println();
+
                 }
+
 
             } catch (NumberFormatException e) {
                 // 숫자 형태의 입력이 아닌 경우 발생
@@ -79,5 +152,25 @@ public class InventorySystem {
                 System.out.println(e.getMessage());
             }
         }
+
+    /*  int num = 0;
+
+        switch (num) {
+            case 1: {
+                //코드 구문
+                int a;
+                break;
+            }
+            case 2:
+                //코드 구문
+                // int a;
+                break;
+            case 3: {
+                // case 3만의 스코프(영역) 설계
+                // : 각 case가 지역 변수의 범위를 가진 독립 블록 (안전성 확보)
+                int a;
+            }
+        }*/
+
     }
 }
