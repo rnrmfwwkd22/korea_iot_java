@@ -8,9 +8,9 @@ public interface InventoryService {
 
     void addItem(Item item);
 
-    List<Item> getItemsByCatefory(String category);
+    List<Item> getItemsByCategory(String category);
 
-    void updateItemPrice(String itemId, int newprice);
+    boolean updateItemPrice(String itemId, int newPrice);
 
     void deleteItem(String itemId);
 }

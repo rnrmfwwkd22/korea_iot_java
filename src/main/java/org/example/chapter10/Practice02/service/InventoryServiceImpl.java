@@ -21,7 +21,7 @@ public class InventoryServiceImpl implements InventoryService{
     }
 
     @Override
-    public List<Item> getItemsByCatefory(String category) {
+    public List<Item> getItemsByCategory(String category) {
         Set<Item> allItems = repository.findAll();
         List<Item> categoryItems = new ArrayList<Item>();
 
@@ -34,14 +34,20 @@ public class InventoryServiceImpl implements InventoryService{
     }
 
     @Override
-    public void updateItemPrice(String itemId, int newprice) {
+    public boolean updateItemPrice(String itemId, int newPrice) {
+        boolean isUpdated = false;
         // 수정할 Item이 저장소에 존재하는지 확인
+
         Item item = repository.findById(itemId);
 
         if (item != null) {
-            item.setPrice(newprice);
+            item.setPrice(newPrice);
+            isUpdated = true;
+            return isUpdated;
 
         }
+        System.out.println("바꿀수 없습니다.");
+        return false;
     }
 
     @Override

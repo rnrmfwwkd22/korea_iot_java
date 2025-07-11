@@ -28,8 +28,10 @@ public class InventorySystem {
                 // : A 값을 분석하여 Integer 형태로 변경
                 // - 숫자 형태로 변경할 수 없는 값이 립력되는 경우
                 //      NumberFormatException 발생
-                int choice = Integer.parseInt(sc.nextLine());
-
+                int choice = Integer.parseInt(sc.nextLine()); //한줄 깔끔함.
+//                int choice = sc.nextInt(); -  sc.nextInt로 할경우 항상
+//                                                  sc.nextLine();로 버퍼 비워주기
+//                                                      깔끔하지 않음 클린코드 X
                 switch (choice) {
                     case 1:
                         // 책 추가
@@ -41,7 +43,7 @@ public class InventorySystem {
                         String isbn = sc.nextLine();
                         System.out.println("Enter Book Author: ");
                         String author = sc.nextLine();
-                        System.out.println("Enter Book Pulisher: ");
+                        System.out.println("Enter Book Publisher: ");
                         String publisher = sc.nextLine();
                         System.out.println("Enter Book Category: ");
                         String category = sc.nextLine();
@@ -148,8 +150,13 @@ public class InventorySystem {
                 // 컬렉션에서 요소를 가져올 떄 해당 요소가 없는 경우 발생하는 예외
                 // - 존재하지 않는 것을 가져올 떄 발생
                 System.out.println(e.getMessage());
+
+
             } catch (Exception e) {
                 System.out.println(e.getMessage());
+//                System.out.println();  - 그냥 줄바꿈 루프에 영향 없음
+//                sc.nextLine(); -  sc.next로 할경우 버퍼를 비워줘야 루프 멈춤
+//                                        깔끔하지 않음 클린코드 X
             }
         }
 

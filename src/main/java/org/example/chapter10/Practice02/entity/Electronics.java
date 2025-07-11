@@ -19,6 +19,6 @@ public class Electronics extends Item {
 
     @Override
     public String toString() {
-        return super.toString() + "// Brand: " + brand + ", Warranty: " + warranty;
+        return super.toString() + " // Brand: " + brand + ", Warranty: " + warranty;
     }
 }
